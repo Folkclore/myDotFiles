@@ -10,10 +10,18 @@
       ./hardware-configuration.nix
     ];
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.grub.useOSProber = true;
+  # Use the GRUB 2 boot loader.
+  boot.loader.grub.enable = true;
+  boot.loader.grub.version = 2;
+  boot.loader.grub.device = "/dev/sda"; # "nodev" for EFI
+  # for EFI systems
+  # boot.loader.grub.efiSupport = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
+
+  # Bios boot.
+  boot.loader.grub.enable = true;
+  boot.loader.grub.version = 2;
+  boot.loader.grub.device = "/dev/sda";  
 
   networking.hostName = "nixos"; # Define your hostname.
   networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -54,26 +62,11 @@
   # Creating  
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-  # Mount home in another disk
-  fileSystems = {
-     "/" = {
-       device = "/dev/disk/by-uuid/8e67216e-fe96-4109-8532-81ec212a3f8a";
-       fsType= "btrfs";
-      };
 
-      "/home" = {
-        device = "/dev/disk/by-uuid/13209bec-b52a-4e7e-9ba8-aa81856e3a87";
-	fsType = "btrfs";
-      };
-
-      "/boot" = {
-         device = "/dev/disk/by-uuid/972A-E5EE";
-         fsType = "vfat";
-      };
-  };
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/05a33b11-6b92-46d5-a183-2e15433ff7d9"; }
-    ];
+  # Filesystems
+  # Supposedly better for the SSD.
+  fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
+  swapDevices = [];
 
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -87,7 +80,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     man-pages os-prober
+     man-pages os-prober flatpak libreoffice
      # Network
      tdesktop wirelesstools wpa_supplicant iw firefox wget curl
      # X11
@@ -108,17 +101,25 @@
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  
   services = {
-	xserver.enable = true;
-	# Setting dwm as window manager
-	xserver.windowManager.dwm.enable = true;
-	xserver.layout = "br";
-        # xserver.autorun = false;
-	xserver.videoDrivers = [ "modesetting" ];
-	xserver.useGlamor = true;
 
+    # flatpak
+    flatpak.enable = true;
+
+    # Enable the OpenSSH daemon.
+    # services.openssh.enable = true;
+
+	  xserver.enable = true;
+	  # Setting dwm as window manager
+	  xserver.windowManager.dwm.enable = true;
+	  xserver.layout = "br";
+
+    # xserver.autorun = false;
+	  xserver.videoDrivers = [ "modesetting" ];
+	  xserver.useGlamor = true;
+
+    
   };
 
   # Open ports in the firewall.
