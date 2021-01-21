@@ -77,6 +77,9 @@
      extraGroups = [ "wheel" "networkmanager" "audio" ]; # Enable ‘sudo’ for the user audio control and network.
   };
 
+  
+  # Enable bringhtness control
+  programs.light.enable = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -84,7 +87,7 @@
      # Network
      tdesktop wirelesstools wpa_supplicant iw firefox wget curl
      # X11
-     xorg.xkill nitrogen dmenu dwm st
+     xorg.xkill nitrogen dmenu dwm st xorg.xbacklight redshift
      # Code
      vim vscode git zsh 
   ];
