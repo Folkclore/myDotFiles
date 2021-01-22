@@ -18,11 +18,6 @@
   # boot.loader.grub.efiSupport = true;
   # boot.loader.efi.canTouchEfiVariables = true;
 
-  # Bios boot.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
-  boot.loader.grub.device = "/dev/sda";  
-
   networking.hostName = "nixos"; # Define your hostname.
   networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -83,7 +78,7 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     man-pages os-prober flatpak libreoffice
+     man-pages os-prober flatpak libreoffice mpv
      # Network
      tdesktop wirelesstools wpa_supplicant iw firefox wget curl
      # X11
@@ -112,18 +107,19 @@
 
     # Enable the OpenSSH daemon.
     # services.openssh.enable = true;
-
-	  xserver.enable = true;
-	  # Setting dwm as window manager
-	  xserver.windowManager.dwm.enable = true;
-	  xserver.layout = "br";
-
-    # xserver.autorun = false;
-	  xserver.videoDrivers = [ "modesetting" ];
-	  xserver.useGlamor = true;
-
     
+    xserver = {
+      enable = true;
+      # Setting dwm as window manager
+      windowManager.dwm.enable = true;
+      layout = "br";
+      # xserver.autorun = false;
+      videoDrivers = [ "modesetting" ];
+      useGlamor = true;
+    };
   };
+
+  xdg.portal.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
