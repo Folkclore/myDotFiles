@@ -13,10 +13,10 @@
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
-  boot.loader.grub.device = "/dev/sda"; # "nodev" for EFI
+  boot.loader.grub.device = "nodev"; # "nodev" for EFI
   # for EFI systems
-  # boot.loader.grub.efiSupport = true;
-  # boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos"; # Define your hostname.
   networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -60,8 +60,8 @@
 
   # Filesystems
   # Supposedly better for the SSD.
-  fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
-  swapDevices = [];
+  # fileSystems."/".options = [ "noatime" "nodiratime" "discard" ];
+  # swapDevices = [];
 
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
